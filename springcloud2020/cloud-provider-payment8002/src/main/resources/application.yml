@@ -23,7 +23,8 @@ eureka:
     fetch-registry: true
     service-url:
       # 当由多台服务时，需要把全部的服务端都注入
-      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+#    defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+      defaultZone: http://eureka7001.com:7001/eureka
   instance:
     instance-id: payment8002
     prefer-ip-address: true #访问路径可以显示IP地址

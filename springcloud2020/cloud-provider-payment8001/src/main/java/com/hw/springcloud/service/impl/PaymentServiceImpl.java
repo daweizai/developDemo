@@ -28,6 +28,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Payment findById(Long id) {
         return paymentDao.findById(id);
     }
