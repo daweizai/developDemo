@@ -58,4 +58,10 @@ public class PaymentController {
         }
         return new CommonResult<>(200, "查询成功,端口： "+serverPort, payment);
     }
+
+
+    @GetMapping("/lb")
+    public String getPaymentLB(){
+        return serverPort;
+    }
 }
