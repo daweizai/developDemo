@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 public class ApplicationContextConfig {
 
     @Bean
-//    @LoadBalanced   //开启微服务的负载均衡，否则会报错
+//    @LoadBalanced   //开启微服务的负载均衡，否则会报错。如果是自定义的负载均衡算法，则需要把该注解删除。
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
 

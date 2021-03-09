@@ -63,6 +63,11 @@ public class OrderController {
         return new CommonResult<>(400, "无法访问");
     }
 
+
+    /**
+     * 实现自定义负载均衡算法实现
+     * @return
+     */
     @GetMapping("/payment/lb")
     public String getPaymentLB(){
         List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
