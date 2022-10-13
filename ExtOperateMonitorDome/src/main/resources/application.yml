@@ -1,0 +1,59 @@
+# \u5E94\u7528\u540D\u79F0
+spring:
+  application:
+  name: ExtOperateMonitorDome
+  # sqllite config
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite::resource:static/sqllite/web_manage.db
+#    username:
+#    password:
+    initialization-mode: ALWAYS
+    continue-on-error: true
+    # 初始化表
+    schema: classpath:db/table_ini.sql
+
+# \u5E94\u7528\u670D\u52A1 WEB \u8BBF\u95EE\u7AEF\u53E3
+server:
+  port: 8999
+
+
+# mybatis config
+mybatis-plus:
+  mapper-locations: classpath*:mapping/*.xml
+  type-aliases-package: com.hundsun.extoperatemonitordome.datasource.entity
+  global-config:
+    #数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID", ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: AUTO
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: NOT_NULL
+      #驼峰下划线转换
+      column-underline: true
+      logic-delete-value: -1
+      logic-not-delete-value: 0
+    banner: false
+    #原生配置
+    configuration:
+      # 打印sql
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+      map-underscore-to-camel-case: true
+      cache-enabled: false
+      call-setters-on-nulls: true
+      jdbc-type-for-null: 'null'
+
+# 日志输出配置
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        security: WARN
+        web: ERROR
+  file:
+    path: ./logs
+    name: './logs/ext_operate_monitor_dome.log'
+  pattern:
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}:%L - %msg%n'
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}:%L - %msg%n'

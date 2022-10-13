@@ -1,0 +1,55 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+
+group = 'com.hundsun'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+//    mavenCentral()
+    mavenLocal()
+//        def xml = new XmlSlurper()
+//        def m2 = new File(System.getenv("MAVEN_HOME") + "/conf/settings-fam-jfrog.xml")
+//        def setting = xml.parse(m2)
+//        maven {
+//            credentials {
+//                username = setting.servers.server.username
+//                password = setting.servers.server.password
+//            }
+//            url "http://artifactory.hundsun.com:80/artifactory/fam2.0-mvn-virtual"
+//        }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.alibaba:fastjson:1.2.72'
+    implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.2'
+    implementation 'com.github.xiaoymin:knife4j-spring-boot-starter:3.0.3'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'cn.hutool:hutool-all:5.8.8'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'junit:junit'
+}
+
+test {
+    useJUnitPlatform()
+}
