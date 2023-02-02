@@ -1,7 +1,6 @@
 package com.hundsun.extoperatemonitordome.sercice.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.lang.Snowflake;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hundsun.extoperatemonitordome.datasource.dao.OperateMonitorResulMapper;
 import com.hundsun.extoperatemonitordome.datasource.entity.TsExecuteOperateMonitorResult;
@@ -33,18 +32,18 @@ public class OperateMonitorResulServiceImpl implements OperateMonitorResulServic
     OperateMonitorResulMapper operateMonitorResulMapper;
 
     @Override
-    public ResponseData<String> addDealExtOperateMonitorResult(ExecuteOperateMonitorResultDto executeOperateMonitorResultDto) {
+    public ResponseData<String> addDealExtOperateMonitorResult(List<ExecuteOperateMonitorResultDto> executeOperateMonitorResultDtoList) {
         ResponseData<String> responseData = new ResponseData<>();
-        if (executeOperateMonitorResultDto == null){
+        if (CollectionUtil.isEmpty(executeOperateMonitorResultDtoList)){
            return responseData.error("入参为空");
         }
-        TsExecuteOperateMonitorResult tsExecuteOperateMonitorResult = new TsExecuteOperateMonitorResult();
-        BeanUtils.copyProperties(executeOperateMonitorResultDto, tsExecuteOperateMonitorResult);
-        Snowflake snowflake = new Snowflake();
-        long recordId = snowflake.nextId();
-        tsExecuteOperateMonitorResult.setRecordId(String.valueOf(recordId));
-        boolean count = operateMonitorResulMapper.save(tsExecuteOperateMonitorResult);
-        if (count){
+        int count = 0;
+        for (ExecuteOperateMonitorResultDto executeOperateMonitorResultDto : executeOperateMonitorResultDtoList) {
+            TsExecuteOperateMonitorResult tsExecuteOperateMonitorResult = new TsExecuteOperateMonitorResult();
+            BeanUtils.copyProperties(executeOperateMonitorResultDto, tsExecuteOperateMonitorResult);
+            count += operateMonitorResulMapper.insert(tsExecuteOperateMonitorResult);
+        }
+        if (count > 0){
             responseData.setReturnData("新增成功");
         }else {
             responseData.setReturnData("新增失败");
@@ -65,9 +64,11 @@ public class OperateMonitorResulServiceImpl implements OperateMonitorResulServic
         LambdaQueryWrapper<TsExecuteOperateMonitorResult> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TsExecuteOperateMonitorResult::getFundCode, fundCode)
                     .and(i ->i.eq(TsExecuteOperateMonitorResult::getItemCode, itemId))
-                .and(i-> i.eq(TsExecuteOperateMonitorResult::getBusinessDate, businessDate))
-                .and(i -> i.in(CollectionUtil.isNotEmpty(dateValueList), TsExecuteOperateMonitorResult::getDataValue, dateValueList));
-        List<TsExecuteOperateMonitorResult> resultList = operateMonitorResulMapper.list(queryWrapper);
+                .and(i-> i.eq(TsExecuteOperateMonitorResult::getBusinessDate, businessDate));
+        if (CollectionUtil.isNotEmpty(dateValueList)){
+            queryWrapper.and(i -> i.in(TsExecuteOperateMonitorResult::getDataValue, dateValueList));
+        }
+        List<TsExecuteOperateMonitorResult> resultList = operateMonitorResulMapper.selectList(queryWrapper);
         if (resultList.isEmpty()){
             return responseData;
         }
@@ -100,8 +101,8 @@ public class OperateMonitorResulServiceImpl implements OperateMonitorResulServic
             queryWrapper.eq(TsExecuteOperateMonitorResult::getFundCode, fundCode)
                     .and(i ->i.eq(TsExecuteOperateMonitorResult::getItemCode, itemCode))
                     .and(i-> i.eq(TsExecuteOperateMonitorResult::getBusinessDate, businessDate));
-            boolean remove = operateMonitorResulMapper.remove(queryWrapper);
-            if (remove){
+            int remove = operateMonitorResulMapper.delete(queryWrapper);
+            if (remove > 0){
                 responseData.setReturnData("删除成功");
             }
         } catch (RuntimeException e) {

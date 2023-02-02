@@ -6,6 +6,7 @@ import com.hundsun.extoperatemonitordome.dto.OperateMonitorResultDto;
 import com.hundsun.extoperatemonitordome.sercice.OperateMonitorResulService;
 import com.hundsun.extoperatemonitordome.sercice.TsCheckItemInfoService;
 import com.hundsun.extoperatemonitordome.util.ResponseData;
+import com.hundsun.extoperatemonitordome.vo.ExecuteICheckItemResultVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -58,22 +59,19 @@ public class ExtMonitoringItemController {
 
     @ApiOperation(value = "执行监控项检查并返回结果接口")
     @PostMapping("/dealExtOperateMonitor")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "fundCode", value = "产品代码", dataType = "string", dataTypeClass = String.class, paramType = "query"),
-            @ApiImplicitParam(name = "itemId", value = "监控项id", dataType = "string",  dataTypeClass = String.class,paramType = "query"),
-            @ApiImplicitParam(name = "businessDate", value = "业务日期", dataType = "string", dataTypeClass = String.class, paramType = "query"),
-            @ApiImplicitParam(name = "indicator1", value = "阈值1", dataType = "string", dataTypeClass = String.class, paramType = "query"),
-            @ApiImplicitParam(name = "indicator2", value = "阈值2", dataType = "string", dataTypeClass = String.class, paramType = "query")
-    })
-    public ResponseData<List<OperateMonitorResultDto>> dealExtOperateMonitor(String fundCode, String itemId, String businessDate, String indicator1, String indicator2) {
-        return extMonitoringItemService.dealExtOperateMonitor(fundCode, itemId, businessDate, indicator1, indicator2);
+    @ApiImplicitParam(name = "executeICheckItemResultVo", value = "新增监控项检查结果对象",  dataType = "executeICheckItemResultVo",
+            dataTypeClass = ExecuteICheckItemResultVo.class, paramType = "body")
+    public ResponseData<List<OperateMonitorResultDto>> dealExtOperateMonitor(@RequestBody ExecuteICheckItemResultVo executeICheckItemResultVo) {
+        return extMonitoringItemService.dealExtOperateMonitor(executeICheckItemResultVo.getFundCode(),executeICheckItemResultVo.getItemId(),
+                executeICheckItemResultVo.getBusinessDate(),executeICheckItemResultVo.getIndicator1(),executeICheckItemResultVo.getIndicator2());
     }
 
     @ApiOperation(value = "新增执行监控项检查结果接口")
     @PostMapping("/addDealExtOperateMonitorResult")
-    @ApiImplicitParam(name = "executeOperateMonitorResultDto", value = "新增监控项检查结果对象", dataType = "executeOperateMonitorResultDto", dataTypeClass = ExecuteOperateMonitorResultDto.class, paramType = "query")
-    public ResponseData<String> addDealExtOperateMonitorResult(@RequestBody ExecuteOperateMonitorResultDto executeOperateMonitorResultDto) {
-        return extMonitoringItemService.addDealExtOperateMonitorResult(executeOperateMonitorResultDto);
+    @ApiImplicitParam(name = "executeOperateMonitorResultDtoList", value = "新增监控项检查结果对象",  dataType = "ExecuteOperateMonitorResultDto",
+            dataTypeClass = ExecuteOperateMonitorResultDto.class, paramType = "body",allowMultiple = true)
+    public ResponseData<String> addDealExtOperateMonitorResult(@RequestBody List<ExecuteOperateMonitorResultDto> executeOperateMonitorResultDtoList) {
+        return extMonitoringItemService.addDealExtOperateMonitorResult(executeOperateMonitorResultDtoList);
     }
 
     @ApiOperation(value = "删除执行监控项检查结果接口")

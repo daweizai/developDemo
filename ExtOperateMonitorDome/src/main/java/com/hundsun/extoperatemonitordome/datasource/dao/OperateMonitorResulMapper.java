@@ -1,6 +1,6 @@
 package com.hundsun.extoperatemonitordome.datasource.dao;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hundsun.extoperatemonitordome.datasource.entity.TsExecuteOperateMonitorResult;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,6 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2022/10/10 20:35
  */
 @Mapper
-public interface OperateMonitorResulMapper extends IService<TsExecuteOperateMonitorResult> {
+public interface OperateMonitorResulMapper extends BaseMapper<TsExecuteOperateMonitorResult> {
 
 }

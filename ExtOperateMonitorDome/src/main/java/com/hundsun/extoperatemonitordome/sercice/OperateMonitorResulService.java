@@ -12,7 +12,7 @@ import java.util.List;
  * @author daweizai36273
  * @date 2022/10/10 13:47
  */
-public interface OperateMonitorResulService {
+public interface OperateMonitorResulService{
 
 
     /**
@@ -32,10 +32,10 @@ public interface OperateMonitorResulService {
      * 功能描述:
      * 新增检查结果
      *
-     * @param executeOperateMonitorResultDto
+     * @param executeOperateMonitorResultDtoList
      * @return com.hundsun.extoperatemonitordome.util.ResponseData<java.lang.String>
      */
-    ResponseData<String> addDealExtOperateMonitorResult(ExecuteOperateMonitorResultDto executeOperateMonitorResultDto);
+    ResponseData<String> addDealExtOperateMonitorResult(List<ExecuteOperateMonitorResultDto> executeOperateMonitorResultDtoList);
 
     /**
      * 功能描述:

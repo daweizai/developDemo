@@ -1,6 +1,6 @@
 package com.hundsun.extoperatemonitordome.datasource.dao;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hundsun.extoperatemonitordome.datasource.entity.TsCheckItemInfo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,5 +11,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2022/10/13 17:01
  */
 @Mapper
-public interface TsCheckItemInfoMapper extends IService<TsCheckItemInfo> {
+public interface TsCheckItemInfoMapper extends BaseMapper<TsCheckItemInfo> {
 }

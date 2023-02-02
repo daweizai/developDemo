@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.5.RELEASE'
+    id 'org.springframework.boot' version '2.3.0.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
 }
@@ -21,6 +21,8 @@ configurations {
 repositories {
 //    mavenCentral()
     mavenLocal()
+    maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+
 //        def xml = new XmlSlurper()
 //        def m2 = new File(System.getenv("MAVEN_HOME") + "/conf/settings-fam-jfrog.xml")
 //        def setting = xml.parse(m2)
@@ -35,11 +37,16 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.alibaba:fastjson:1.2.72'
+    implementation 'com.alibaba:fastjson:1.2.83'
     implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
-    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.2'
+    implementation 'p6spy:p6spy:3.8.7'
+    // mybatis
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.1'
+
+    //swagger
     implementation 'com.github.xiaoymin:knife4j-spring-boot-starter:3.0.3'
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
     implementation 'cn.hutool:hutool-all:5.8.8'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

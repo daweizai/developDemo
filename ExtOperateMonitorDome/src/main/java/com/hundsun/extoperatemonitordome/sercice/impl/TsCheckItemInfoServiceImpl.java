@@ -6,6 +6,7 @@ import com.hundsun.extoperatemonitordome.datasource.entity.TsCheckItemInfo;
 import com.hundsun.extoperatemonitordome.dto.OperateMonitorDto;
 import com.hundsun.extoperatemonitordome.sercice.TsCheckItemInfoService;
 import com.hundsun.extoperatemonitordome.util.ResponseData;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.List;
  * @date 2022/10/13 17:05
  */
 @Service
+@Slf4j
 public class TsCheckItemInfoServiceImpl implements TsCheckItemInfoService {
 
     @Autowired
@@ -34,13 +36,14 @@ public class TsCheckItemInfoServiceImpl implements TsCheckItemInfoService {
             }
             TsCheckItemInfo tsCheckItemInfo = new TsCheckItemInfo();
             BeanUtils.copyProperties(operateMonitorDto, tsCheckItemInfo);
-            boolean count = tsCheckItemInfoMapper.save(tsCheckItemInfo);
-            if (count) {
+            int count = tsCheckItemInfoMapper.insert(tsCheckItemInfo);
+            if (count > 0) {
                 responseData.setReturnData("新增成功");
             }
         } catch (RuntimeException e) {
             responseData.setReturnCode("-1");
             responseData.setReturnMsg(e.getMessage());
+            log.error("新增异常",e);
         }
         return responseData;
     }
@@ -54,8 +57,8 @@ public class TsCheckItemInfoServiceImpl implements TsCheckItemInfoService {
             }
             LambdaQueryWrapper<TsCheckItemInfo> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TsCheckItemInfo::getItemCode, itemCode);
-            boolean remove = tsCheckItemInfoMapper.remove(queryWrapper);
-            if (remove) {
+            int remove = tsCheckItemInfoMapper.delete(queryWrapper);
+            if (remove > 0) {
                 responseData.setReturnData("删除成功");
             }
         } catch (RuntimeException e) {
@@ -69,7 +72,7 @@ public class TsCheckItemInfoServiceImpl implements TsCheckItemInfoService {
     public ResponseData<List<OperateMonitorDto>> listExtOperateMonitor() {
         ResponseData<List<OperateMonitorDto>> responseData = new ResponseData<>();
         try {
-            List<TsCheckItemInfo> tsCheckItemInfoList = tsCheckItemInfoMapper.list();
+            List<TsCheckItemInfo> tsCheckItemInfoList = tsCheckItemInfoMapper.selectList(null);
             List<OperateMonitorDto> operateMonitorDtoList = new ArrayList<>();
             if (!tsCheckItemInfoList.isEmpty()) {
                 tsCheckItemInfoList.forEach(obj -> {
@@ -82,6 +85,8 @@ public class TsCheckItemInfoServiceImpl implements TsCheckItemInfoService {
         } catch (RuntimeException e) {
             responseData.setReturnCode("-1");
             responseData.setReturnMsg(e.getMessage());
+            log.error("查询异常",e);
+
         }
         return responseData;
     }
